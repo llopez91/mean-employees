@@ -1,0 +1,28 @@
+version: '3'
+services:
+    nodejs-server:
+        build: 
+            context: ./server
+            dockerfile: Dockerfile
+        container_name: node-api
+        ports: 
+            - "3000:3000"
+        volumes:
+            - ./server:/usr/src/app/api
+            - /usr/src/app/api/node_modules
+        links:
+            - db
+    db:
+        image: mongo
+        container_name: mymongodatabase
+        ports: 
+            - 27017:27017
+    angular-ui:
+        build: 
+            context: ./frontend
+            dockerfile: Dockerfile
+        ports:
+            - "4201:4201"
+        container_name: angular-ui
+        volumes:
+            - ./frontend:/usr/src/app/app-ui
